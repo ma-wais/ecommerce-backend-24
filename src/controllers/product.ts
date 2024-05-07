@@ -19,7 +19,7 @@ export const getlatestProducts = TryCatch(async (req, res, next) => {
   if (myCache.has("latest-products"))
     products = JSON.parse(myCache.get("latest-products") as string);
   else {
-    products = await Product.find({}).sort({ createdAt: -1 }).limit(10);
+    products = await Product.find({}).sort({ createdAt: -1 }).limit(8);
     myCache.set("latest-products", JSON.stringify(products));
   }
 
@@ -28,7 +28,6 @@ export const getlatestProducts = TryCatch(async (req, res, next) => {
     products,
   });
 });
-
 // Revalidate on New,Update,Delete Product & on New Order
 export const getAllCategories = TryCatch(async (req, res, next) => {
   let categories;
@@ -45,7 +44,6 @@ export const getAllCategories = TryCatch(async (req, res, next) => {
     categories,
   });
 });
-
 // Revalidate on New,Update,Delete Product & on New Order
 export const getAdminProducts = TryCatch(async (req, res, next) => {
   let products;
@@ -173,7 +171,7 @@ export const getAllProducts = TryCatch(
   async (req: Request<{}, {}, {}, SearchRequestQuery>, res, next) => {
     const { search, sort, category, price } = req.query;
 
-    const page = Number(req.query.page) || 1;
+    const page = Number(req.query.page) || 1; 
     // 1,2,3,4,5,6,7,8
     // 9,10,11,12,13,14,15,16
     // 17,18,19,20,21,22,23,24
