@@ -13,6 +13,7 @@ export const newUser = TryCatch(
     const { name, email, photo, gender, _id, dob } = req.body;
 
     let user = await User.findById(_id);
+    const dobDate = dob ? new Date(dob) : undefined;
 
     if (user)
       return res.status(200).json({
@@ -20,7 +21,7 @@ export const newUser = TryCatch(
         message: `Welcome, ${user.name}`,
       });
 
-    if (!_id || !name || !email || !photo || !gender || !dob)
+    if (!_id || !name || !email || !photo)
       return next(new ErrorHandler("Please add all fields", 400));
 
     user = await User.create({
@@ -29,7 +30,7 @@ export const newUser = TryCatch(
       photo,
       gender,
       _id,
-      dob: new Date(dob),
+      dob: dobDate,
     });
 
     return res.status(201).json({
